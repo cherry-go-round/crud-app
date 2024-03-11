@@ -11,3 +11,84 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.crud-app-container {
+  background-color: #e2b996;
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.main-title {
+  color: #000;
+}
+
+.body-container {
+  background-color: white;
+  padding: 20px;
+}
+
+.input-container {
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.input-group {
+  padding: 20px;
+  text-align: center;
+}
+
+.input-container label {
+  color: #e2b996;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.add-button {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.item-list {
+  list-style-type: none;
+  padding: 10;
+  color: #000;
+  margin: 0;
+  padding: 0;
+  flex: 1; /* 차지할 수 있는 최대 영역을 설정 */
+}
+
+.item-list li {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.expense {
+  color: #000;
+}
+
+.cost {
+  color: #000;
+}
+
+.delete-all-button {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.total-cost {
+  text-align: right;
+  color: #000;
+  margin-top: 20px;
+  font-size: 30px;
+}
