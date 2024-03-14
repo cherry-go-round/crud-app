@@ -1,118 +1,131 @@
-import React, { useState } from 'react';
-import './index.css'; // 스타일 파일을 import
+import { useState } from "react";
+import "./App.css";
+import Alert from "./components/Alert";
+import ExpenseForm from './components/ExpenseForm';
+import ExpenseList from "./components/ExpenseList";
+const App = () => {
 
-const CrudApp = () => {
-  const [data, setData] = useState([]);
-  const [newExpense, setNewExpense] = useState('');
-  const [newCost, setNewCost] = useState('');
-  const [editItemId, setEditItemId] = useState(null);
+  const [charge, setCharge] = useState("");
+  const [id, setId] = useState('');
+  const [amount, setAmount] = useState(0);
+  const [edit, setEdit] = useState(false);
 
-  const handleAddItem = () => {
-    if (editItemId !== null) {
-      // 업데이트 모드일 때
-      const updatedData = data.map(item =>
-        item.id === editItemId
-          ? { id: item.id, expense: newExpense, cost: parseInt(newCost, 10) }
-          : item
-      );
-      setData(updatedData);
-      setEditItemId(null); // 업데이트가 끝나면 다시 null로 설정
+  const [alert, setAlert] = useState({ show: false });
+
+  const [expenses, setExpenses] = useState([
+    { id: 1, charge: "렌트비", amount: 2000 },
+    { id: 2, charge: "교통비", amount: 400 },
+    { id: 3, charge: "식비", amount: 1200 },
+  ])
+
+  const clearItems = () => {
+    setExpenses([]);
+  }
+
+  const handleCharge = (e) => {
+    console.log(e.target.value);
+    setCharge(e.target.value);
+  }
+
+  const handleAmount = (e) => {
+    setAmount(e.target.valueAsNumber)
+  }
+
+  const handleDelete = (id) => {
+    const newExpenses = expenses.filter(expense => expense.id !== id)
+    console.log(newExpenses);
+    setExpenses(newExpenses);
+    handleAlert({ type: 'danger', text: '아이템이 삭제되었습니다.' })
+  }
+
+  const handleAlert = ({ type, text }) => {
+    setAlert({ show: true, type, text });
+    setTimeout(() => {
+      setAlert({ show: false });
+    }, 7000);
+  }
+
+  const handleEdit = id => {
+    const expense = expenses.find(item => item.id === id);
+    const { charge, amount } = expense;
+    setId(id);
+    setCharge(charge);
+    setAmount(amount);
+    setEdit(true);
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (charge !== "" && amount > 0) {
+      if (edit) {
+        const newExpenses = expenses.map(item => {
+          return item.id === id ? { ...item, charge, amount } : item
+        })
+
+        setExpenses(newExpenses);
+        setEdit(false);
+        handleAlert({ type: 'success', text: "아이템이 수정되었습니다." });
+      } else {
+        const newExpense = { id: crypto.randomUUID(), charge, amount }
+        // 불변성을 지켜주기 위해서 새로운 expenses를 생성
+        const newExpenses = [...expenses, newExpense];
+        setExpenses(newExpenses);
+        handleAlert({ type: "success", text: "아이템이 생성되었습니다." });
+      }
+      setCharge("");
+      setAmount(0);
     } else {
-      // 추가 모드일 때
-      const newItemObject = {
-        id: data.length + 1,
-        expense: newExpense,
-        cost: parseInt(newCost, 10), // Convert cost to integer
-      };
-      setData([...data, newItemObject]);
+      console.log('error');
+      handleAlert({
+        type: 'danger',
+        text: 'charge는 빈 값일 수 없으며 amount는 0보다 커야 합니다.'
+      })
     }
-    setNewExpense('');
-    setNewCost('');
-  };
+  }
 
-  const handleEditItem = (id, expense, cost) => {
-    setEditItemId(id);
-    setNewExpense(expense);
-    setNewCost(cost);
-  };
-
-  const handleDeleteItem = (id) => {
-    const updatedData = data.filter(item => item.id !== id);
-    setData(updatedData);
-  };
-
-  const handleDeleteAll = () => {
-    setData([]);
-  };
-
-  const calculateTotalCost = () => {
-    return data.reduce((total, item) => total + item.cost, 0);
-  };
 
   return (
-    <div className="crud-app-container">
-      <h1 className="main-title">예산 계산기</h1>
+    <main className="main-container">
+      {alert.show ? <Alert type={alert.type} text={alert.text} /> : null}
+      <h1>예산 계산기</h1>
 
-      <div className="body-container">
-        <div className="input-container">
-          <div className="input-group">
-            <label htmlFor="expense">지출 항목</label>
-            <input
-              type="text"
-              id="expense"
-              placeholder="예) 렌트비"
-              value={newExpense}
-              onChange={(e) => setNewExpense(e.target.value)}
-            />
-          </div>
-
-          <div className="input-group">
-            <label htmlFor="cost">비용</label>
-            <input
-              type="number"
-              id="cost"
-              placeholder="예) 100"
-              value={newCost}
-              onChange={(e) => setNewCost(e.target.value)}
-            />
-          </div>
-        </div>
-
-        <button className="add-button" onClick={handleAddItem}>
-            {editItemId !== null ? '수정하기' : '제출'}
-        </button>
-
-        <ul className="item-list">
-          {data.map(item => (
-            <li key={item.id}>
-              <span className="expense">{item.expense}     </span>
-              <span className="cost">{item.cost}</span>
-              <button onClick={() => handleEditItem(item.id, item.expense, item.cost)}>
-                수정
-              </button>
-              <button onClick={() => handleDeleteItem(item.id)}>
-                삭제
-              </button>
-            </li>
-          ))}
-        </ul>
-
-        {data.length > 0 && (
-          <div className="action-buttons">
-            <button className="delete-all-button" onClick={handleDeleteAll}>
-              목록 지우기
-            </button>
-          </div>
-        )}
+      <div style={{ width: '100%', backgroundColor: 'white', padding: '1rem' }} >
+        {/* Expense Form */}
+        <ExpenseForm
+          handleCharge={handleCharge}
+          charge={charge}
+          handleAmount={handleAmount}
+          amount={amount}
+          handleSubmit={handleSubmit}
+          edit={edit}
+        />
       </div>
 
-      {data.length > 0 && (
-        <div className="total-cost">
-          <p>총 지출: {calculateTotalCost()}원</p>
-        </div>
-      )}
-    </div>
-  );
-};
+      <div style={{ width: '100%', backgroundColor: 'white', padding: '1rem' }} >
+        {/* Expense List */}
+        <ExpenseList
+          expenses={expenses}
+          handleDelete={handleDelete}
+          handleEdit={handleEdit}
+          clearItems={clearItems}
+        />
+      </div>
 
-export default CrudApp;
+      <div style={{ display: 'flex', justifyContent: 'end', marginTop: '1rem' }}>
+        <p style={{ fontSize: '2rem' }}>
+          총지출:
+          <span>
+            {expenses.reduce((acc, curr) => {
+              return (acc += curr.amount);
+            }, 0)}
+            원
+          </span>
+        </p>
+      </div>
+
+    </main>
+  )
+
+}
+
+export default App;

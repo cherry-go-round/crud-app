@@ -1,94 +1,52 @@
+:root {
+  --primaryColor: #90A959;
+  --secondColor: #E9B872;
+  --mainWhite: #fff;
+  --mainBlack: #222;
+  --mainRed: #C45151;
+  --mainGreen: #4CAF50;
+}
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background: var(--secondColor);
+  color: var(--mainBlack);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+h1 {
+  margin: 1rem 0;
 }
 
-.crud-app-container {
-  background-color: #e2b996;
-  padding: 20px;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.main-title {
-  color: #000;
-}
-
-.body-container {
-  background-color: white;
-  padding: 20px;
-}
-
-.input-container {
-  border-radius: 8px;
-  margin-bottom: 20px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.input-group {
-  padding: 20px;
+.btn {
+  text-decoration: none;
+  color: var(--mainWhite);
+  background-color: var(--primaryColor);
   text-align: center;
-}
-
-.input-container label {
-  color: #e2b996;
+  letter-spacing: 0.5px;
+  font-size: 14px;
+  outline: 0;
+  border: none;
+  border-radius: 2px;
   display: block;
-  margin-bottom: 8px;
-}
-
-.add-button {
-  background-color: #4caf50;
-  color: #fff;
-  border: none;
-  padding: 10px;
+  height: 36px;
+  line-height: 36px;
+  padding: 0 16px;
   cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s linear;
+  display: flex;
+  align-items: center;
 }
 
-.item-list {
-  list-style-type: none;
-  padding: 10;
-  color: #000;
-  margin: 0;
-  padding: 0;
-  flex: 1; /* 차지할 수 있는 최대 영역을 설정 */
+.btn:hover {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
-.item-list li {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-
-.expense {
-  color: #000;
-}
-
-.cost {
-  color: #000;
-}
-
-.delete-all-button {
-  background-color: #4caf50;
-  color: #fff;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-}
-
-.total-cost {
-  text-align: right;
-  color: #000;
-  margin-top: 20px;
-  font-size: 30px;
+.btn-icon {
+  margin-left: 0.75rem;
+  font-size: 1.2rem;
 }
